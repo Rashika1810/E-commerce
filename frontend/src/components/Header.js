@@ -8,7 +8,7 @@ const Header = () => {
     setShowMenu(!showMenu);
   };
   return (
-    <header className="fixed shadow-md w-full h-16 px-2 md:px-4 z-50">
+    <header className="fixed shadow-md w-full h-16 px-2 md:px-4 z-50 bg-violet-200">
       {/* desktop */}
       <div className=" flex items-center h-full justify-between">
         <Link to={""}>
@@ -18,10 +18,24 @@ const Header = () => {
         </Link>
         <div className=" flex items-center gap-5 md:gap-7">
           <nav className="flex gap-4 md:gap-7 text-base md:text-lg">
-            <Link to={""}>Home</Link>
-            <Link to={"menu"}>Menu</Link>
-            <Link to={"about"}>About</Link>
-            <Link to={"contact"}>Contact</Link>
+            <Link to={""} className="text-indigo-500 hover:text-indigo-700">
+              Home
+            </Link>
+            <Link to={"menu"} className="text-indigo-500 hover:text-indigo-700">
+              Menu
+            </Link>
+            <Link
+              to={"about"}
+              className="text-indigo-500 hover:text-indigo-700"
+            >
+              About
+            </Link>
+            <Link
+              to={"contact"}
+              className="text-indigo-500 hover:text-indigo-700"
+            >
+              Contact
+            </Link>
           </nav>
           <div className="text-2xl text-slate-600 relative">
             <FaCartShopping />
@@ -34,9 +48,19 @@ const Header = () => {
               <FaUserLarge />
             </div>
             {showMenu && (
-              <div className="absolute right-2 bg-white  px-1 shadow drop-shadow-md">
-                <p className="whitespace-nowrap cursor-pointer">New Product</p>
-                <p className="whitespace-nowrap cursor-pointer">Login</p>
+              <div className=" flex flex-col absolute right-2 bg-violet-200  px-1 shadow drop-shadow-md">
+                <Link
+                  to={"newProduct"}
+                  className="whitespace-nowrap cursor-pointer text-indigo-500"
+                >
+                  New Product
+                </Link>
+                <Link
+                  to={"login"}
+                  className="whitespace-nowrap cursor-pointer text-indigo-500"
+                >
+                  Login
+                </Link>
               </div>
             )}
           </div>
