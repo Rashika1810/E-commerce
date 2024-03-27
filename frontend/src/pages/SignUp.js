@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { BiShow, BiHide } from "react-icons/bi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import user2 from "../assests/animation_signup.gif";
+import { ImageToBase64 } from "../utility/ImageToBase64";
+import { toast } from "react-hot-toast";
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const [showPassword1, setShowPassword1] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
   const [data, setData] = useState({
@@ -11,6 +15,7 @@ const SignUp = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    image: "",
   });
 
   console.log(data);
@@ -33,13 +38,42 @@ const SignUp = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleUploadProfile = async (e) => {
+    const data = await ImageToBase64(e.target.files[0]);
+    console.log(data);
+    setData((preve) => {
+      return {
+        ...preve,
+        image: data,
+      };
+    });
+  };
+
+  console.log(process.env.REACT_APP_SERVER_DOMAIN);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const { firstName, email, password, confirmPassword } = data;
     if (firstName && email && password && confirmPassword) {
       if (password === confirmPassword) {
-        alert("Successfully Submitted");
+        const fetchData = await fetch(
+          `${process.env.REACT_APP_SERVER_DOMAIN}/user/signup`,
+          {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+        const respData = await fetchData.json();
+        console.log(respData);
+
+        toast(respData.message);
+        if (respData.alert) {
+          navigate("/login");
+        }
       } else {
         alert("Password do not match!");
       }
@@ -48,9 +82,32 @@ const SignUp = () => {
     }
   };
   return (
-    <div className="p-3 md:p-4">
+    <div className="p-10 md:p-4">
       <div className=" w-full max-w-sm bg-white m-auto flex flex-col p-4 shadow-2xl">
-        <h1 className="text-center text-2xl">Sign Up</h1>
+        <h1 className=" text-indigo-600 font-medium mb-2 text-2xl text-center">
+          Create Your Account
+        </h1>
+        <div className=" w-20 h-20 overflow-hidden rounded-full drop-shadow-md m-auto relative ">
+          <img
+            src={data.image ? data.image : user2}
+            className="w-full h-full"
+            alt=""
+          />
+          <label htmlFor="profileImage">
+            <div className="absolute bottom-0 h-1/3 bg-violet-200 bg-opacity-50 w-full text-center cursor-pointer ">
+              <p className="text-sm p-1  text-white">Upload</p>
+            </div>
+
+            {/* to upload profile picture */}
+            <input
+              type="file"
+              id="profileImage"
+              accept="image/*"
+              className="hidden"
+              onChange={handleUploadProfile}
+            />
+          </label>
+        </div>
         <form className="w-full py-3" onSubmit={handleSubmit}>
           <label htmlFor="firstName" className=" text-indigo-500">
             First Name
@@ -66,6 +123,7 @@ const SignUp = () => {
           <label htmlFor="lastName" className=" text-indigo-500">
             Last Name <span className="text-gray-400">(Optional)</span>
           </label>
+
           <input
             type="text"
             id="lastName"
