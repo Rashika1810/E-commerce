@@ -1,11 +1,25 @@
 import React, { useState } from "react";
 import logo from "../assests/logo.png";
 import { Link } from "react-router-dom";
-import { FaUserLarge, FaCartShopping } from "react-icons/fa6";
+import { FaCartShopping } from "react-icons/fa6";
+import { HiOutlineUserCircle } from "react-icons/hi";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutRedux } from "../redux/userSlice";
+import { toast } from "react-hot-toast";
+
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const userData = useSelector((state) => state.user);
+  console.log(userData);
+  const dispatch = useDispatch();
+
   const handleShowMenu = () => {
     setShowMenu(!showMenu);
+  };
+
+  const handleLogout = () => {
+    dispatch(logoutRedux());
+    toast("Logged Out Successfully");
   };
   return (
     <header className="fixed shadow-md w-full h-16 px-2 md:px-4 z-50 bg-violet-200">
@@ -43,9 +57,13 @@ const Header = () => {
               0
             </div>
           </div>
-          <div className="text-lg text-slate-600" onClick={handleShowMenu}>
-            <div className=" border-2 border-solid border-slate-600 p-1 rounded-full cursor-pointer">
-              <FaUserLarge />
+          <div className=" text-slate-600" onClick={handleShowMenu}>
+            <div className="text-3xl cursor-pointer w-8 h-8 rounded-full overflow-hidden drop-shadow-md">
+              {userData.image ? (
+                <img src={userData.image} className="h-full w-full" />
+              ) : (
+                <HiOutlineUserCircle />
+              )}
             </div>
             {showMenu && (
               <div className=" flex flex-col absolute right-2 bg-violet-200  px-1 shadow drop-shadow-md">
@@ -55,12 +73,21 @@ const Header = () => {
                 >
                   New Product
                 </Link>
-                <Link
-                  to={"login"}
-                  className="whitespace-nowrap cursor-pointer text-indigo-500"
-                >
-                  Login
-                </Link>
+                {userData.email ? (
+                  <p
+                    className="cursor-pointer  text-indigo-500"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </p>
+                ) : (
+                  <Link
+                    to={"login"}
+                    className="whitespace-nowrap cursor-pointer text-indigo-500"
+                  >
+                    Login
+                  </Link>
+                )}
               </div>
             )}
           </div>
