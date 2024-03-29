@@ -80,6 +80,16 @@ const SignUp = () => {
     } else {
       alert("Enter all fields");
     }
+    setData(() => {
+      return {
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        image: "",
+      };
+    });
   };
   return (
     <div className="p-10 md:p-4">

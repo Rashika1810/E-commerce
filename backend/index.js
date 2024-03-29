@@ -20,6 +20,8 @@ mongoose
   .then(() => console.log("connected to database"))
   .catch((err) => console.log(err));
 
+// user section
+
 //schema
 
 const userSchema = mongoose.Schema({
@@ -37,6 +39,22 @@ const userSchema = mongoose.Schema({
 //model
 
 const userModel = mongoose.model("user", userSchema);
+
+// product section
+
+//schema
+
+const productSchema = mongoose.Schema({
+  pname: String,
+  category: String,
+  price: String,
+  description: String,
+  image: String,
+});
+
+//model
+
+const productModel = mongoose.model("products", productSchema);
 
 //Api
 
@@ -92,6 +110,16 @@ app.post("/user/login", async (req, resp) => {
       alert: false,
     });
   }
+});
+
+//create product api
+
+app.post("/createProduct", async (req, resp) => {
+  console.log(req.body);
+
+  const data = productModel(req.body);
+  const save = await data.save();
+  resp.send({ message: "Product created successfully!" });
 });
 
 app.listen(PORT, () => {

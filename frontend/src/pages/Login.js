@@ -63,6 +63,13 @@ const Login = () => {
     } else {
       alert("Enter all required fields");
     }
+
+    setData(() => {
+      return {
+        email: "",
+        password: "",
+      };
+    });
   };
   return (
     <div className="p-10 md:p-4">
