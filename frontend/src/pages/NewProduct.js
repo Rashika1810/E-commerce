@@ -65,6 +65,7 @@ const NewProduct = () => {
       };
     });
   };
+
   return (
     <div className="p-4">
       <form
@@ -110,7 +111,7 @@ const NewProduct = () => {
           <option value={"Ice-cream"} className="bg-white">
             Ice-cream
           </option>
-          <option value={"Ice-cream"} className="bg-white">
+          <option value={"Dosa"} className="bg-white">
             Dosa
           </option>
         </select>

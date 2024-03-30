@@ -119,9 +119,17 @@ app.post("/createProduct", async (req, resp) => {
 
   const data = productModel(req.body);
   const save = await data.save();
-  resp.send({ message: "Product created successfully!" });
+  resp.send({ message: "Product uploaded successfully!" });
 });
 
 app.listen(PORT, () => {
   console.log("Server is running at port : " + PORT);
+});
+
+//get product api
+
+app.get("/getProducts", async (req, resp) => {
+  const data = await productModel.find({});
+  const dataArray = [...data];
+  resp.send(JSON.stringify(dataArray));
 });

@@ -21,6 +21,7 @@ const Header = () => {
     dispatch(logoutRedux());
     toast("Logged Out Successfully");
   };
+  console.log(process.env.REACT_APP_ADMIN_EMAIL);
   return (
     <header className="fixed shadow-md w-full h-16 px-2 md:px-4 z-50 bg-violet-200">
       {/* desktop */}
@@ -67,18 +68,21 @@ const Header = () => {
             </div>
             {showMenu && (
               <div className=" flex flex-col absolute right-2 bg-violet-200  px-1 shadow drop-shadow-md">
-                <Link
-                  to={"newProduct"}
-                  className="whitespace-nowrap cursor-pointer text-indigo-500"
-                >
-                  New Product
-                </Link>
+                {userData.email === process.env.REACT_APP_ADMIN_EMAIL && (
+                  <Link
+                    to={"newProduct"}
+                    className="whitespace-nowrap cursor-pointer text-indigo-500"
+                  >
+                    New Product
+                  </Link>
+                )}
+
                 {userData.email ? (
                   <p
                     className="cursor-pointer  text-indigo-500"
                     onClick={handleLogout}
                   >
-                    Logout
+                    Logout <span>({userData.firstName})</span>
                   </p>
                 ) : (
                   <Link
