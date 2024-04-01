@@ -114,6 +114,9 @@ const NewProduct = () => {
           <option value={"Dosa"} className="bg-white">
             Dosa
           </option>
+          <option value={"Special_Offers"} className="bg-white">
+            Special_Offers
+          </option>
         </select>
         <label htmlFor="image" className="text-indigo-500 ">
           Image
@@ -144,7 +147,6 @@ const NewProduct = () => {
           name="price"
           value={data.price}
           onChange={handleOnChange}
-          // className="rounded bg-violet-200 p-1 m-1"
           className="w-full px-2 py-1 rounded bg-violet-200 mt-2 mb-3 outline-none"
         />
         <label htmlFor="description" className="text-indigo-500 m-1">

@@ -1,11 +1,49 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import HomeCard from "../components/HomeCard";
 import { useSelector } from "react-redux";
-import CardSlider from "../components/CardSlider";
+
 import { GrLinkPrevious } from "react-icons/gr";
 import { GrLinkNext } from "react-icons/gr";
+import AllProduct from "../components/AllProduct";
+import CardSlider from "../components/CardSlider";
 
 const Home = () => {
+  const [textIndex, setTextIndex] = useState(0);
+  const texts = [
+    "Flavors",
+    "Freshness",
+    "Convenience",
+    "Quality",
+    "Variety",
+    "Ease",
+    "Comfort",
+    "Innovation",
+    "Simplicity",
+    "Joy",
+    "Health",
+    "Sustainability",
+    "Delight",
+    "Wellness",
+    "Efficiency",
+    "Taste",
+    "Luxury",
+    "Accessibility",
+  ];
+
+  const pairSize = 3;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTextIndex((prevIndex) => (prevIndex + pairSize) % texts.length);
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const getTextIndex = (index, offset) => {
+    return (index + offset) % texts.length;
+  };
+
   const productData = useSelector((state) => state.product.productList);
   console.log(productData);
   const homeProductCartList = productData.slice(14, 18);
@@ -28,6 +66,8 @@ const Home = () => {
     slideProductRef.current.scrollLeft -= 220;
   };
 
+  //filter data display
+
   return (
     <div className="p-2 md:p-4">
       <div className="md:flex gap-5 p-3 ">
@@ -46,15 +86,15 @@ const Home = () => {
           <p className="text-4xl md:text-5xl font-normal md:leading-normal">
             Explore a world of{" "}
             <span className="text-yellow-500 hover:text-yellow-400">
-              Flavors
+              {texts[getTextIndex(textIndex, 0)]}
             </span>
             ,{" "}
             <span className="text-green-500 hover:text-green-400">
-              Freshness
+              {texts[getTextIndex(textIndex, 1)]}
             </span>
             , and{" "}
             <span className="text-blue-500 hover:text-blue-400">
-              Convenience
+              {texts[getTextIndex(textIndex, 2)]}
             </span>
             , all in one place.
           </p>
@@ -72,6 +112,7 @@ const Home = () => {
             ? homeProductCartList.map((e1) => {
                 return (
                   <HomeCard
+                    id={e1._id}
                     key={e1._id}
                     image={e1.image}
                     pname={e1.pname}
@@ -86,17 +127,17 @@ const Home = () => {
         </div>
       </div>
       <div>
-        <h2 className="text-3xl font-medium text-indigo-700">
-          Fresh Grocery Produce
-        </h2>
+        <h1 className="text-3xl font-medium text-indigo-700">Grocery Store</h1>
 
         <div className="flex justify-center items-center gap-2">
-          <button
-            onClick={prevproduct}
-            className=" bg-violet-300 hover:bg-violet-400 p-1 rounded text-lg"
-          >
-            <GrLinkPrevious />
-          </button>
+          {homeProductCartListGrocery.length > 6 && (
+            <button
+              onClick={prevproduct}
+              className=" bg-violet-300 hover:bg-violet-400 p-1 rounded text-lg"
+            >
+              <GrLinkPrevious />
+            </button>
+          )}
 
           <div
             className="flex gap-5 mt-2 overflow-scroll scrollbar-none scroll-smooth transition-all"
@@ -107,9 +148,9 @@ const Home = () => {
                   return (
                     <CardSlider
                       key={e1._id}
+                      id={e1._id}
                       pname={e1.pname}
                       price={e1.price}
-                      category={e1.category}
                       image={e1.image}
                     />
                   );
@@ -118,14 +159,17 @@ const Home = () => {
                   return <CardSlider />;
                 })}
           </div>
-          <button
-            onClick={nextproduct}
-            className=" bg-violet-300 hover:bg-violet-400 p-1 rounded text-lg"
-          >
-            <GrLinkNext />
-          </button>
+          {homeProductCartListGrocery.length > 6 && (
+            <button
+              onClick={nextproduct}
+              className=" bg-violet-300 hover:bg-violet-400 p-1 rounded text-lg"
+            >
+              <GrLinkNext />
+            </button>
+          )}
         </div>
       </div>
+      <AllProduct />
     </div>
   );
 };

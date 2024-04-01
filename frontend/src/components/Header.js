@@ -32,11 +32,14 @@ const Header = () => {
           </div>
         </Link>
         <div className=" flex items-center gap-5 md:gap-7">
-          <nav className="flex gap-4 md:gap-7 text-base md:text-lg">
+          <nav className=" gap-4 md:gap-7 text-base md:text-lg hidden md:flex">
             <Link to={""} className="text-indigo-500 hover:text-indigo-700">
               Home
             </Link>
-            <Link to={"menu"} className="text-indigo-500 hover:text-indigo-700">
+            <Link
+              to={"menu/6606f2ce9a64f8df56e666ba"}
+              className="text-indigo-500 hover:text-indigo-700"
+            >
               Menu
             </Link>
             <Link
@@ -67,7 +70,7 @@ const Header = () => {
               )}
             </div>
             {showMenu && (
-              <div className=" flex flex-col absolute right-2 bg-violet-200  px-1 shadow drop-shadow-md">
+              <div className=" flex flex-col absolute right-2 bg-violet-200  px-1 shadow drop-shadow-md min-w-[120px] text-center">
                 {userData.email === process.env.REACT_APP_ADMIN_EMAIL && (
                   <Link
                     to={"newProduct"}
@@ -79,7 +82,7 @@ const Header = () => {
 
                 {userData.email ? (
                   <p
-                    className="cursor-pointer  text-indigo-500"
+                    className="cursor-pointer  text-indigo-500 px-2"
                     onClick={handleLogout}
                   >
                     Logout <span>({userData.firstName})</span>
@@ -87,11 +90,37 @@ const Header = () => {
                 ) : (
                   <Link
                     to={"login"}
-                    className="whitespace-nowrap cursor-pointer text-indigo-500"
+                    className="whitespace-nowrap cursor-pointer text-indigo-500 px-2"
                   >
                     Login
                   </Link>
                 )}
+                <nav className=" text-base md:text-lg flex flex-col md:hidden">
+                  <Link
+                    to={""}
+                    className=" px-2 text-indigo-500 hover:text-indigo-700 py-1"
+                  >
+                    Home
+                  </Link>
+                  <Link
+                    to={"menu/6606f2ce9a64f8df56e666ba"}
+                    className=" px-2 text-indigo-500 hover:text-indigo-700 py-1"
+                  >
+                    Menu
+                  </Link>
+                  <Link
+                    to={"about"}
+                    className=" px-2 text-indigo-500 hover:text-indigo-700 py-1"
+                  >
+                    About
+                  </Link>
+                  <Link
+                    to={"contact"}
+                    className=" px-2 text-indigo-500 hover:text-indigo-700 py-1"
+                  >
+                    Contact
+                  </Link>
+                </nav>
               </div>
             )}
           </div>
