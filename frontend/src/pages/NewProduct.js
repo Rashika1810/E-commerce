@@ -114,9 +114,6 @@ const NewProduct = () => {
           <option value={"Dosa"} className="bg-white">
             Dosa
           </option>
-          <option value={"Special_Offers"} className="bg-white">
-            Special_Offers
-          </option>
         </select>
         <label htmlFor="image" className="text-indigo-500 ">
           Image

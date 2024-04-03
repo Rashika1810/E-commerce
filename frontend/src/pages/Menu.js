@@ -1,9 +1,10 @@
 import React, { useRef } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { GrLinkPrevious } from "react-icons/gr";
 import { GrLinkNext } from "react-icons/gr";
 import CardSlider from "../components/CardSlider";
+import { addToCart } from "../redux/productSlice";
 // 6606f2ce9a64f8df56e666ba
 const Menu = () => {
   const { filterby } = useParams();
@@ -28,6 +29,11 @@ const Menu = () => {
   };
   const prevproduct = () => {
     slideProductRef.current.scrollLeft -= 220;
+  };
+  const dispatch = useDispatch();
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
+    dispatch(addToCart(productDisplay));
   };
 
   return (
@@ -55,8 +61,11 @@ const Menu = () => {
           </div>
           <div class="flex flex-col md:flex-row gap-4 md:gap-8 mt-4 md:mt-5">
             <div class="flex hover:scale-105 gap-2 items-center justify-center bg-yellow-500 px-2 py-1 rounded-md cursor-pointer hover:bg-yellow-600 text-white font-bold drop-shadow-md">
-              <button class="transform hover:scale-105 transition-transform duration-300">
-                Add To Cart
+              <button
+                class="transform hover:scale-105 transition-transform duration-300"
+                onClick={handleAddToCart}
+              >
+                Add To Bag
               </button>
               <img
                 src="https://cdn-icons-png.flaticon.com/128/4290/4290854.png"

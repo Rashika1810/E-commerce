@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import FilterProduct from "./FilterProduct";
 import CardSlider from "./CardSlider";
 import { useSelector } from "react-redux";
+import Loader from "./Loader";
+import PageLoader from "./PageLoader";
 
 const AllProduct = () => {
   const productData = useSelector((state) => state.product.productList);
@@ -34,15 +36,21 @@ const AllProduct = () => {
         </h1>
 
         <div className=" flex gap-4 justify-center overflow-scroll scrollbar-none scroll-smooth">
-          {categoryList[0] &&
-            categoryList.map((e1) => {
+          {categoryList[0] ? (
+            categoryList.map((e1, index) => {
               return (
                 <FilterProduct
+                  key={index}
                   category={e1}
                   onClick={() => handleFilterProduct(e1)}
                 />
               );
-            })}
+            })
+          ) : (
+            <div className="min-h-[150px]">
+              <PageLoader />
+            </div>
+          )}
         </div>
       </div>
 

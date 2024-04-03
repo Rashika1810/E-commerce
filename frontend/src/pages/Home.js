@@ -13,12 +13,9 @@ const Home = () => {
     "Flavors",
     "Freshness",
     "Convenience",
-    "Quality",
-    "Variety",
-    "Ease",
     "Comfort",
     "Innovation",
-    "Simplicity",
+    "Ease",
     "Joy",
     "Health",
     "Sustainability",
@@ -44,16 +41,45 @@ const Home = () => {
     return (index + offset) % texts.length;
   };
 
+  // const productData = useSelector((state) => state.product.productList);
+  // // console.log(productData);
+  // const homeProductCartList = productData.slice(14, 18);
+
   const productData = useSelector((state) => state.product.productList);
-  console.log(productData);
-  const homeProductCartList = productData.slice(14, 18);
+  const [homeProductCartList, setHomeProductCartList] = useState([]);
+
+  // Function to split the array into chunks of size 'chunkSize'
+  function chunkArray(arr, chunkSize) {
+    const chunks = [];
+    for (let i = 0; i < arr.length; i += chunkSize) {
+      chunks.push(arr.slice(i, i + chunkSize));
+    }
+    return chunks;
+  }
+
+  useEffect(() => {
+    // Split productData into chunks of size 4
+    const productChunks = chunkArray(productData, 4);
+    let currentIndex = 0;
+
+    // Update homeProductCartList initially and then in intervals
+    setHomeProductCartList(productChunks[currentIndex]);
+
+    const intervalId = setInterval(() => {
+      currentIndex = (currentIndex + 1) % productChunks.length;
+      setHomeProductCartList(productChunks[currentIndex]);
+    }, 5000); // Change interval time as needed (e.g., every 5 seconds)
+
+    // Clean up interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [productData]);
 
   const homeProductCartListGrocery = productData.filter(
     (e1) => e1.category === "Groceries",
     []
   );
 
-  console.log(homeProductCartListGrocery);
+  // console.log(homeProductCartListGrocery);
 
   const loadingArray = new Array(4).fill(null);
   const loadingArrayFeature = new Array(10).fill(null);
@@ -108,7 +134,7 @@ const Home = () => {
 
         {/* left section */}
         <div className="md:w-1/2 flex flex-wrap gap-4 p-2 justify-center">
-          {homeProductCartList[0]
+          {homeProductCartList
             ? homeProductCartList.map((e1) => {
                 return (
                   <HomeCard
@@ -121,8 +147,8 @@ const Home = () => {
                   />
                 );
               })
-            : loadingArray.map((e1) => {
-                return <HomeCard />;
+            : loadingArray.map((e1, index) => {
+                return <HomeCard key={index} />;
               })}
         </div>
       </div>
@@ -147,16 +173,17 @@ const Home = () => {
               ? homeProductCartListGrocery.map((e1) => {
                   return (
                     <CardSlider
-                      key={e1._id}
+                      key={e1._id + "grocery"}
                       id={e1._id}
                       pname={e1.pname}
+                      category={e1.category}
                       price={e1.price}
                       image={e1.image}
                     />
                   );
                 })
-              : loadingArrayFeature.map((e) => {
-                  return <CardSlider />;
+              : loadingArrayFeature.map((e, index) => {
+                  return <CardSlider key={index + "cartLoading"} />;
                 })}
           </div>
           {homeProductCartListGrocery.length > 6 && (

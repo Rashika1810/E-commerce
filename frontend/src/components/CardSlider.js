@@ -1,8 +1,23 @@
 import React from "react";
 import Loader from "./Loader";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../redux/productSlice";
 
 const CardSlider = ({ image, pname, price, category, id }) => {
+  const dispatch = useDispatch();
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
+    dispatch(
+      addToCart({
+        _id: id,
+        pname: pname,
+        category: category,
+        price: price,
+        image: image,
+      })
+    );
+  };
   return (
     <div className="w-full min-w-[200px] max-w-[200px] bg-white mb-2 hover:shadow-lg drop-shadow-lg py-5 px-4 cursor-pointer flex flex-col ">
       {image ? (
@@ -22,10 +37,13 @@ const CardSlider = ({ image, pname, price, category, id }) => {
               <span className="text-red-500">₹ </span>
               <span>{price}</span>
             </p>
-            <button className="bg-yellow-500 py-1 mt-2 rounded hover:bg-yellow-600 w-full">
-              Add To Cart
-            </button>
           </Link>
+          <button
+            className="bg-yellow-500 py-1 mt-2 rounded hover:bg-yellow-600 w-full"
+            onClick={handleAddToCart}
+          >
+            Add To Bag
+          </button>
         </>
       ) : (
         <div className="min-h-[150px]">

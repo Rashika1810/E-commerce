@@ -14,11 +14,11 @@ function App() {
         `${process.env.REACT_APP_SERVER_DOMAIN}/getProducts`
       );
       const resData = await res.json();
-      console.log(resData);
+      // console.log(resData);
       dispatch(setDataProduct(resData));
     })();
   }, []);
-  console.log(productData);
+  // console.log(productData);
   return (
     <>
       <Toaster />
